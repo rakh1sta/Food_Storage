@@ -1,0 +1,21 @@
+name: food_store
+version: '3.9'
+
+services:
+  app:
+    image: food-store
+    container_name: food-store
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgresql
+  postgresql:
+    image: postgres:alpine3.19
+    container_name: food-store-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1303
+      - POSTGRES_DB=food_store
+    ports:
+      - "5432:5432"

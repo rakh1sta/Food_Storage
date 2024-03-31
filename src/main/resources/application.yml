@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: OnlineFoodStorage
+
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    open-in-view: false
+    hibernate.ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    username: postgres
+    password: 1303
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/food_store
+
+  liquibase:
+    change-log: classpath:liquibase/master.xml
+
+
+api:
+  info:
+    title: Food Storage Application
+    description: This project created by Rakh1sta
+    version: 1.0
+    terms-of-service: \#
+    contact-name: Rakh1sta
+    contact-email: bintijamshidbek@gmail.com
+    contact-url: https://t.me/rakh1sta
+    license-name: \#
+    license-url: \#
+
+app:
+  jwtSecret: asddsfsadfdj18437r219837rjsdbfjkGFJkjegi2y3grfaiygr3276rtRuayewgrueyg8qr76gugf7r24tr3rtr2r34rg
+  jwtExpirationInMs: 3000000
