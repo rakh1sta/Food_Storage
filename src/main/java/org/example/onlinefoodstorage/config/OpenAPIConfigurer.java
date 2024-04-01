@@ -30,8 +30,8 @@ public class OpenAPIConfigurer {
         return new OpenAPI()
                 .schemaRequirement(SECURITY_SCHEMA_NAME, getSecurityScheme())
                 .security(getSecurityRequirement())
-                .info(info())
-                .servers(getServices());
+                .info(info());
+//                .servers(getServices());
     }
 
     private List<Server> getServices() {

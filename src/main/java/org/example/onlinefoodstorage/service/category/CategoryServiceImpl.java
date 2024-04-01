@@ -34,8 +34,6 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
 //    @Cacheable(key = "#result.id")
     @Override
     public CategoryResDTO create(CategoryCreDTO dto) {
-        System.out.println("create Request to the db");
-
         Optional<Category> category = repository.findByName(dto.getName());
         if (category.isPresent())
             throw new AlreadyExistException("Category already exist with given name :" + category.get().getName());
@@ -47,8 +45,6 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
 //    @CachePut(key = "#dto.id")
     @Override
     public CategoryResDTO update(CategoryUptDTO dto) {
-        System.out.println("update Request to the db");
-
         repository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         Category entity = mapper.toEntity(dto);
@@ -59,7 +55,6 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
 //    @CacheEvict(key = "#id")
     @Override
     public Boolean delete(Long id) {
-        System.out.println("delete Request to the db");
         Category category = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category not found by id : " + id));
         category.setDeleted(true);
@@ -67,10 +62,9 @@ public class CategoryServiceImpl extends AbstractService<CategoryMapper, Categor
         return true;
     }
 
-    @Cacheable(key = "#id")
+//    @Cacheable(key = "#id")
     @Override
     public CategoryResDTO get(Long id) {
-        System.out.println("get Request to the db");
         Category category = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category not found by id : " + id));
         return mapper.toDto(category);

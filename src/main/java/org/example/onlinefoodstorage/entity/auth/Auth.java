@@ -8,6 +8,12 @@ import lombok.*;
 import org.example.onlinefoodstorage.entity.Auditable;
 import org.example.onlinefoodstorage.enums.auth.UserRole;
 import org.example.onlinefoodstorage.enums.auth.UserStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -15,7 +21,7 @@ import org.example.onlinefoodstorage.enums.auth.UserStatus;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Auth extends Auditable/* implements UserDetails*/ {
+public class Auth extends Auditable implements UserDetails {
     @Column(name = "first_name")
     private String firstName;
 
@@ -37,33 +43,33 @@ public class Auth extends Auditable/* implements UserDetails*/ {
     private UserStatus status;
 
 
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return  Collections.singletonList(new SimpleGrantedAuthority(role.name()));
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return phone;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return false;
-//    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return  Collections.singletonList(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return phone;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }

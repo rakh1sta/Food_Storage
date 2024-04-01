@@ -9,4 +9,5 @@ import org.example.onlinefoodstorage.service.GenericGLService;
 
 public interface AuthService extends GenericCUDService<AuthCreDTO, AuthUptDTO, AuthResDTO, Long>,
         GenericGLService<AuthResDTO, GenericCriteria, Long> {
+    String registerUser(AuthCreDTO dto);
 }

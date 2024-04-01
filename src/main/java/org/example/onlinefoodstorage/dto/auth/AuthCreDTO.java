@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.onlinefoodstorage.dto.BaseDTO;
+import org.example.onlinefoodstorage.enums.auth.UserRole;
 
 @Getter
 @Setter
@@ -23,7 +24,7 @@ public class AuthCreDTO implements BaseDTO {
 
     @NotBlank(message = "phone number can not be blank")
     @NotNull(message = "phone number name can not be null")
-    @Pattern(regexp = "^\\+998\\d{2}\\d{7}$\n", message = "phone number is wrong")
+//    @Pattern(regexp = "^\\+998\\d{2}\\d{7}$\n", message = "phone number is wrong")
     private String phone;
 
     @NotBlank(message = "password can not be blank")
@@ -35,4 +36,7 @@ public class AuthCreDTO implements BaseDTO {
     @NotNull(message = "repeat password can not be null")
     @Size(min = 3, max = 10, message = "repeat password length can not be less than 3")
     private String repeatPassword;
+
+    @NotNull(message = "role can not be null")
+    private UserRole role;
 }

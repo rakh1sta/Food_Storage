@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface AuthRepository extends JpaRepository<Auth, Long>, BaseRepository {
 
     Optional<Auth> findByPhone(String phone);
+    Optional<Auth> findByPhoneAndPassword(String phone,String password);
     boolean existsAuthsByPhone(String phone);
 
 }

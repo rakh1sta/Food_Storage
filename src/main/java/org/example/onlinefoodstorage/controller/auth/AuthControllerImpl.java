@@ -1,5 +1,6 @@
 package org.example.onlinefoodstorage.controller.auth;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.example.onlinefoodstorage.controller.AbstractController;
@@ -7,12 +8,14 @@ import org.example.onlinefoodstorage.criteria.GenericCriteria;
 import org.example.onlinefoodstorage.dto.auth.AuthCreDTO;
 import org.example.onlinefoodstorage.dto.auth.AuthResDTO;
 import org.example.onlinefoodstorage.dto.auth.AuthUptDTO;
+import org.example.onlinefoodstorage.dto.auth.LoginReqDTO;
 import org.example.onlinefoodstorage.response.Data;
 import org.example.onlinefoodstorage.service.auth.AuthServiceImpl;
 import org.example.onlinefoodstorage.util.APIUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +32,24 @@ public class AuthControllerImpl extends AbstractController<AuthServiceImpl> impl
     }
 
 
-//    @PostMapping("/register")
-////    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    public ResponseEntity<Data<String>> registerUser(@RequestBody AuthCreDTO registerRequest) {
-////        return service.registerUser(registerRequest);
-//        return null;
-//    }
+    @PostMapping("/register")
+//    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<Data<String>> register(@RequestBody @Valid AuthCreDTO registerRequest) {
+        return new ResponseEntity<>(new Data<>(service.registerUser(registerRequest)), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Data<String>> login(@RequestBody @Valid LoginReqDTO dto) {
+        String token = service.login(dto);
+        if (token == null) {
+            return new ResponseEntity<>(new Data<>(false), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(new Data<>(token), HttpStatus.OK);
+    }
+
+
     @Override
+    @Hidden
     public ResponseEntity<Data<AuthResDTO>> create(AuthCreDTO DTO) {
         AuthResDTO categoryResDTO = service.create(DTO);
         return new ResponseEntity<>(new Data<>(categoryResDTO), HttpStatus.OK);
