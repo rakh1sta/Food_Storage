@@ -6,7 +6,6 @@ spring:
     show-sql: true
     generate-ddl: true
     open-in-view: false
-    hibernate.ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
   datasource:
@@ -17,7 +16,11 @@ spring:
 
   liquibase:
     change-log: classpath:liquibase/master.xml
-
+cache:
+  config:
+    entryTtl: 60
+    other:
+      entryTtl: 30
 
 api:
   info:
@@ -33,4 +36,4 @@ api:
 
 app:
   jwtSecret: asddsfsadfdj18437r219837rjsdbfjkGFJkjegi2y3grfaiygr3276rtRuayewgrueyg8qr76gugf7r24tr3rtr2r34rg
-  jwtExpirationInMs: 3000000
+  jwtExpirationInMs: 3000000 #60*1000*60*24

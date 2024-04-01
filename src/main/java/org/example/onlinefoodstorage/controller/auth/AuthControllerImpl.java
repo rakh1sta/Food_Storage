@@ -1,6 +1,7 @@
 package org.example.onlinefoodstorage.controller.auth;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.example.onlinefoodstorage.controller.AbstractController;
 import org.example.onlinefoodstorage.criteria.GenericCriteria;
 import org.example.onlinefoodstorage.dto.auth.AuthCreDTO;
@@ -11,6 +12,9 @@ import org.example.onlinefoodstorage.service.auth.AuthServiceImpl;
 import org.example.onlinefoodstorage.util.APIUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +28,13 @@ public class AuthControllerImpl extends AbstractController<AuthServiceImpl> impl
         super(service);
     }
 
+
+//    @PostMapping("/register")
+////    @PreAuthorize("hasAnyAuthority('ADMIN')")
+//    public ResponseEntity<Data<String>> registerUser(@RequestBody AuthCreDTO registerRequest) {
+////        return service.registerUser(registerRequest);
+//        return null;
+//    }
     @Override
     public ResponseEntity<Data<AuthResDTO>> create(AuthCreDTO DTO) {
         AuthResDTO categoryResDTO = service.create(DTO);

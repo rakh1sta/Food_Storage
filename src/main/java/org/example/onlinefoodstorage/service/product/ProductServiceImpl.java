@@ -27,7 +27,7 @@ public class ProductServiceImpl extends AbstractService<ProductMapper, ProductRe
 
     @Override
     public ProductResDTO create(ProductCreDTO dto) {
-        Optional<Product> category = repository.findByNameAndDeletedFalse(dto.getName());
+        Optional<Product> category = repository.findByName(dto.getName());
         if (category.isPresent())
             throw new AlreadyExistException("Product already exist with given name :" + category.get().getName());
         Product entity = mapper.toEntity(dto);
@@ -37,7 +37,7 @@ public class ProductServiceImpl extends AbstractService<ProductMapper, ProductRe
 
     @Override
     public ProductResDTO update(ProductUptDTO dto) {
-        repository.findByIdAndDeletedFalse(dto.getId())
+        repository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("Product not found"));
         Product entity = mapper.toEntity(dto);
         entity = repository.save(entity);
@@ -46,7 +46,7 @@ public class ProductServiceImpl extends AbstractService<ProductMapper, ProductRe
 
     @Override
     public Boolean delete(Long id) {
-        Product product = repository.findByIdAndDeletedFalse(id)
+        Product product = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found by id : " + id));
         product.setDeleted(true);
         repository.save(product);
@@ -55,7 +55,7 @@ public class ProductServiceImpl extends AbstractService<ProductMapper, ProductRe
 
     @Override
     public ProductResDTO get(Long id) {
-        Product category = repository.findByIdAndDeletedFalse(id)
+        Product category = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product not found by id : " + id));
         return mapper.toDto(category);
     }
@@ -63,7 +63,7 @@ public class ProductServiceImpl extends AbstractService<ProductMapper, ProductRe
     @Override
     public List<ProductResDTO> getAll(GenericCriteria criteria) {
         Pageable request = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort());
-        Page<Product> entities = repository.findAllByDeletedFalse(request);
+        Page<Product> entities = repository.findAll(request);
         return entities.stream().map(mapper::toDto).toList();
     }
 }

@@ -1,6 +1,6 @@
 package org.example.onlinefoodstorage.service.auth;
 
-import org.example.onlinefoodstorage.config.encryption.PasswordEncoderConfigurer;
+//import org.example.onlinefoodstorage.config.encryption.PasswordEncoderConfigurer;
 import org.example.onlinefoodstorage.criteria.GenericCriteria;
 import org.example.onlinefoodstorage.dto.auth.AuthCreDTO;
 import org.example.onlinefoodstorage.dto.auth.AuthResDTO;
@@ -24,30 +24,28 @@ import java.util.Optional;
 @Service
 public class AuthServiceImpl extends AbstractService<AuthMapper, AuthRepository>
         implements AuthService {
-    private final PasswordEncoderConfigurer encoderConfigurer;
 
-    public AuthServiceImpl(AuthMapper mapper, AuthRepository repository, PasswordEncoderConfigurer encoderConfigurer) {
+    public AuthServiceImpl(AuthMapper mapper, AuthRepository repository) {
         super(mapper, repository);
-        this.encoderConfigurer = encoderConfigurer;
     }
 
     @Override
     public AuthResDTO create(AuthCreDTO dto) {
         if (!dto.getPassword().equals(dto.getRepeatPassword()))
             throw new BadCredentialException("Password not equals to repeated password");
-        Optional<Auth> auth = repository.findByPhoneAndDeletedFalse(dto.getPhone());
+        Optional<Auth> auth = repository.findByPhone(dto.getPhone());
         if (auth.isPresent())
             throw new AlreadyExistException("Auth already exist with given phone :" + auth.get().getPhone());
         Auth entity = mapper.toEntity(dto);
         entity.setRole(UserRole.USER);
-        entity.setPassword(encoderConfigurer.encoder());
+//        entity.setPassword(encoderConfigurer.encoder());
         entity = repository.save(entity);
         return mapper.toDto(entity);
     }
 
     @Override
     public AuthResDTO update(AuthUptDTO dto) {
-        repository.findByIdAndDeletedFalse(dto.getId())
+        repository.findById(dto.getId())
                 .orElseThrow(() -> new NotFoundException("Auth not found"));
         Auth entity = mapper.toEntity(dto);
         entity = repository.save(entity);
@@ -56,7 +54,7 @@ public class AuthServiceImpl extends AbstractService<AuthMapper, AuthRepository>
 
     @Override
     public Boolean delete(Long id) {
-        Auth auth = repository.findByIdAndDeletedFalse(id)
+        Auth auth = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Auth not found by id : " + id));
         auth.setDeleted(true);
         repository.save(auth);
@@ -65,7 +63,7 @@ public class AuthServiceImpl extends AbstractService<AuthMapper, AuthRepository>
 
     @Override
     public AuthResDTO get(Long id) {
-        Auth auth = repository.findByIdAndDeletedFalse(id)
+        Auth auth = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Auth not found by id : " + id));
         return mapper.toDto(auth);
     }
@@ -73,7 +71,7 @@ public class AuthServiceImpl extends AbstractService<AuthMapper, AuthRepository>
     @Override
     public List<AuthResDTO> getAll(GenericCriteria criteria) {
         Pageable request = PageRequest.of(criteria.getPage(), criteria.getSize(), criteria.getSort());
-        Page<Auth> entities = repository.findAllByDeletedFalse(request);
+        Page<Auth> entities = repository.findAll(request);
         return entities.stream().map(mapper::toDto).toList();
     }
 }

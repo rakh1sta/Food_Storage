@@ -8,14 +8,31 @@ services:
     build: ./
     ports:
       - "8080:8080"
+    environment:
+      #      - DATASOURCE_URL=jdbc:postgresql://postgresql:5432/food_store
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=1303
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/food_store
     depends_on:
       - postgresql
+
   postgresql:
     image: postgres:alpine3.19
-    container_name: food-store-db
+    container_name: food_store_db
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=1303
-      - POSTGRES_DB=food_store
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1303
+      POSTGRES_DB: food_store
     ports:
       - "5432:5432"
+
+  redis:
+    image: redis:latest
+    container_name: food-store-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=0

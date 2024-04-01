@@ -11,9 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface AuthRepository extends JpaRepository<Auth, Long>, BaseRepository {
-    Optional<Auth> findByPhoneAndDeletedFalse(String phone);
-    Optional<Auth> findByIdAndDeletedFalse(Long id);
 
+    Optional<Auth> findByPhone(String phone);
+    boolean existsAuthsByPhone(String phone);
 
-    Page<Auth> findAllByDeletedFalse(Pageable pageable);
 }
